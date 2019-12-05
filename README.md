@@ -36,3 +36,28 @@ HtmlText.from(source) //source 为 String 类型的 html 代码
 ```
 
 具体使用细节请查看 example module
+
+注意：
+
+htmlparse 框架中获取 video 标签的首帧是通过获取 video 标签中的 poster 参数：
+
+```
+private static void startVideo(Editable text, XMLReader xmlReader, Html.ImageGetter img) {
+        Map<String, String> attributes = getAttributes(xmlReader);
+        	···
+        String imgUrl = attributes.get("poster");
+        Drawable d = null;
+
+        if (img != null) {
+            if (TextUtils.isEmpty(imgUrl)) {
+                d = img.getDrawable("VIDEO_IMG_TAG" + VIDEO_DEFAULT_IMG_TAG);
+            } else {
+                d = img.getDrawable("VIDEO_IMG_TAG" + imgUrl);
+            }
+        }
+        	···
+    }
+    
+```
+
+如果用户得到的 video 标签的首帧不是存在 poster 中，可自行修改参数名
